@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUser } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const translations = {
     en: {
@@ -43,27 +44,27 @@ function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [language, setLanguage] = useState('en');
-    const [darkMode, setDarkMode] = useState(false); // Dark mode state
+    const [darkMode, setDarkMode] = useState(false);
     const navigate = useNavigate();
 
-    const goLogin = (e) => {
+    const goLogin = async (e) => {
         e.preventDefault();
-        
-        const userData = JSON.parse(localStorage.getItem('userData'));
 
-        if (userData) {
-            if (userData.email === email && userData.password === password) {
-                navigate('/Dashboard');
-            } else {
+        try {
+            const response = await axios.post('https://nt-devconnector.onrender.com/api/auth', { email, password });
+            localStorage.setItem("token", response.data.token);
+            navigate('/Dashboard');
+        } catch (err) {
+            if (err.response && err.response.status === 401) {
                 setError(translations[language].errorIncorrect);
+            } else {
+                setError(translations[language].errorNoUser);
             }
-        } else {
-            setError(translations[language].errorNoUser);
         }
     };
 
     return (
-        <div className={`px-[35px] min-h-[89vh]  font-raleway ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
+        <div className={`px-[35px] min-h-[89vh] font-raleway ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
             <div className='flex items-center justify-between'>
                 <h1 className='text-[48px] text-[#17a2b8] mt-[25px] font-bold'>{translations[language].title}</h1>
                 <div className='flex items-center'>
@@ -102,7 +103,7 @@ function Login() {
                 />
                 {error && <p className='text-red-500'>{error}</p>}
                 <button 
-                    className='w-[102px] h-[40px] bg-[#17a2b8] text-[white] hover:bg-blue-600 duration-[.3s] mt-[18px]' 
+                    className='w-[102px] h-[40px] bg-[#17a2b8] text-white hover:bg-blue-600 duration-300 mt-[18px]' 
                     type="submit"
                 >
                     {translations[language].loginButton}

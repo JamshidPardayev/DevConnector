@@ -1,50 +1,23 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { FaUser } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 
 const translations = {
     en: {
-        title: 'Sign up',
-        subtitle: 'Create Your Account',
-        namePlaceholder: 'Name',
-        emailPlaceholder: 'Email Address',
-        passwordPlaceholder: 'Password',
-        confirmPasswordPlaceholder: 'Confirm Password',
-        registrationSuccess: 'Registration successful!',
-        errorFill: "Please fill out all fields",
-        errorPasswordMismatch: 'Passwords do not match',
-        alreadyHaveAccount: 'Already have an account?',
-        signIn: 'Sign In',
-        gravatarInfo: 'This site uses Gravatar so if you want a profile image, use a Gravatar email',
+        title: "Sign Up",
+        subtitle: "Create an Account",
+        namePlaceholder: "Name",
+        emailPlaceholder: "Email",
+        passwordPlaceholder: "Password",
+        confirmPasswordPlaceholder: "Confirm Password",
+        errorFill: "Please fill in all fields.",
+        errorPasswordMismatch: "Passwords do not match.",
+        registrationSuccess: "Registration successful!",
+        signIn: "Sign In",
+        alreadyHaveAccount: "Already have an account?",
+        gravatarInfo: "Your Gravatar image will be displayed here."
     },
-    ru: {
-        title: 'Регистрация',
-        subtitle: 'Создайте свою учетную запись',
-        namePlaceholder: 'Имя',
-        emailPlaceholder: 'Электронная почта',
-        passwordPlaceholder: 'Пароль',
-        confirmPasswordPlaceholder: 'Подтвердите пароль',
-        registrationSuccess: 'Регистрация успешна!',
-        errorFill: 'Пожалуйста, заполните все поля',
-        errorPasswordMismatch: 'Пароли не совпадают',
-        alreadyHaveAccount: 'Уже есть аккаунт?',
-        signIn: 'Войти',
-        gravatarInfo: 'Этот сайт использует Gravatar, поэтому, если вы хотите изображение профиля, используйте адрес электронной почты Gravatar',
-    },
-    uz: {
-        title: 'Ro\'yxatdan o\'tish',
-        subtitle: 'Hisobingizni yarating',
-        namePlaceholder: 'Ism',
-        emailPlaceholder: 'Elektron pochta manzili',
-        passwordPlaceholder: 'Parol',
-        confirmPasswordPlaceholder: 'Parolni tasdiqlang',
-        registrationSuccess: 'Ro\'yxatdan o\'tish muvaffaqiyatli!',
-        errorFill: 'Iltimos, barcha maydonlarni to\'ldiring',
-        errorPasswordMismatch: 'Parollar bir xil emas',
-        alreadyHaveAccount: 'Allaqachon hisobingiz bormi?',
-        signIn: 'Kirish',
-        gravatarInfo: 'Ushbu sayt Gravatar’dan foydalanadi, shuning uchun agar siz profil rasmini xohlasangiz, Gravatar elektron pochta manzilidan foydalaning',
-    }
 };
 
 function Signup() {
@@ -53,14 +26,18 @@ function Signup() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
     const [language, setLanguage] = useState('en');
     const [darkMode, setDarkMode] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const SubmitBtn = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+        setSuccessMessage('');
 
-        if (name.trim() === '' || email.trim() === '' || password.trim() === '' || confirmPassword.trim() === '') {
+        if (!name || !email || !password || !confirmPassword) {
             setError(translations[language].errorFill);
             return;
         }
@@ -70,16 +47,23 @@ function Signup() {
             return;
         }
 
-        localStorage.setItem('userData', JSON.stringify({ name, email, password }));
+        setLoading(true);
 
-        setName('');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setError('');
-        alert(translations[language].registrationSuccess);
-
-        navigate('/Login');
+        try {
+            const res = await axios.post('https://nt-devconnector.onrender.com/api/users', { name, email, password, });
+            localStorage.setItem("token", res.data.token);
+            setSuccessMessage(translations[language].registrationSuccess);
+            localStorage.setItem('userData', JSON.stringify({ name, email, password }));
+            setName('');
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
+            navigate('/Login');
+        } catch (error) {
+            setError(error.response?.data?.message || 'An error occurred');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -103,48 +87,50 @@ function Signup() {
             <p className='flex items-center gap-x-[5px] text-[24px] mt-[10px]'>
                 <FaUser /> {translations[language].subtitle}
             </p>
-            <form onSubmit={SubmitBtn}>
+            <form onSubmit={handleSubmit}>
                 <input 
                     className='h-[40px] w-[100%] border mt-[18px] px-[10px] placeholder:text-[18px] outline-none'
-                    required 
                     placeholder={translations[language].namePlaceholder} 
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)} 
+                    required
                 />
                 <input 
                     className='h-[40px] w-[100%] border mt-[18px] px-[10px] placeholder:text-[18px] outline-none'
-                    required 
                     placeholder={translations[language].emailPlaceholder} 
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)} 
+                    required
                 />
                 <p className='text-[13px] text-[#888888] mt-[5px]'>
                     {translations[language].gravatarInfo}
                 </p>
                 <input 
                     className='h-[40px] w-[100%] border mt-[18px] px-[10px] placeholder:text-[18px] outline-none'
-                    required 
                     placeholder={translations[language].passwordPlaceholder} 
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)} 
+                    required
                 />
                 <input 
                     className='h-[40px] w-[100%] border mt-[18px] px-[10px] placeholder:text-[18px] outline-none'
-                    required 
                     placeholder={translations[language].confirmPasswordPlaceholder} 
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)} 
+                    required
                 />
                 {error && <p className='text-red-500'>{error}</p>}
+                {successMessage && <p className='text-green-500'>{successMessage}</p>}
                 <button 
                     className='w-[102px] h-[40px] bg-[#17a2b8] text-[white] hover:bg-blue-600 duration-[.3s] mt-[18px]' 
                     type="submit"
+                    disabled={loading}
                 >
-                    {translations[language].signIn}
+                    {loading ? 'Loading...' : translations[language].signIn}
                 </button>
             </form>
             <div className='flex flex-wrap items-center gap-x-[10px] mt-[20px]'>
