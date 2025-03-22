@@ -18,6 +18,34 @@ const translations = {
         alreadyHaveAccount: "Already have an account?",
         gravatarInfo: "Your Gravatar image will be displayed here."
     },
+    ru: {
+        title: "Регистрация",
+        subtitle: "Создать учетную запись",
+        namePlaceholder: "Имя",
+        emailPlaceholder: "Электронная почта",
+        passwordPlaceholder: "Пароль",
+        confirmPasswordPlaceholder: "Подтвердите пароль",
+        errorFill: "Пожалуйста, заполните все поля.",
+        errorPasswordMismatch: "Пароли не совпадают.",
+        registrationSuccess: "Регистрация успешна!",
+        signIn: "Войти",
+        alreadyHaveAccount: "Уже есть учетная запись?",
+        gravatarInfo: "Ваше изображение Gravatar будет отображаться здесь."
+    },
+    uz: {
+        title: "Ro'yxatdan o'tish",
+        subtitle: "Hisob yaratish",
+        namePlaceholder: "Ism",
+        emailPlaceholder: "Elektron pochta",
+        passwordPlaceholder: "Parol",
+        confirmPasswordPlaceholder: "Parolni tasdiqlash",
+        errorFill: "Iltimos, barcha maydonlarni to'ldiring.",
+        errorPasswordMismatch: "Parollar mos kelmaydi.",
+        registrationSuccess: "Ro'yxatdan o'tish muvaffaqiyatli!",
+        signIn: "Kirish",
+        alreadyHaveAccount: "Allaqachon hisobingiz bormi?",
+        gravatarInfo: "Sizning Gravatar rasmingiz shu yerda ko'rsatiladi."
+    }
 };
 
 function Signup() {
@@ -50,10 +78,10 @@ function Signup() {
         setLoading(true);
 
         try {
-            const res = await axios.post('https://nt-devconnector.onrender.com/api/users', { name, email, password, });
+            const res = await axios.post('https://nt-devconnector.onrender.com/api/users', { name, email, password });
             localStorage.setItem("token", res.data.token);
             setSuccessMessage(translations[language].registrationSuccess);
-            localStorage.setItem('userData', JSON.stringify({ name, email, password }));
+            localStorage.setItem('userData', JSON.stringify({ name, email }));
             setName('');
             setEmail('');
             setPassword('');
