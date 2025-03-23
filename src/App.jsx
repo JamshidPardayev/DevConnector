@@ -6,6 +6,8 @@ import Login from "./Login";
 import Dashboard from "./Dashboard";
 import Developers from "./Developers";
 import Posts from "./Posts";
+import PostDetails from "./PostDetails";
+import DevelopersDetails from "./DevelopersDetails";
 
 function App() {
   return (
@@ -19,6 +21,9 @@ function App() {
         <Route path="/Dashboard" element={<Dashboard />} /> 
         <Route path="/Developers" element={<Developers />} /> 
         <Route path="/Logout" element={<Hero />} /> 
+        <Route path="/posts/:id" element={<PostDetails />} /> 
+        <Route path="/developers/:id" element={<DevelopersDetails />} /> 
+        
       </Routes>
     </Router>
 

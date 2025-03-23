@@ -8,13 +8,13 @@ function Header() {
 
     return (
         <Fragment>
-            <nav className="flex flex-wrap items-center justify-between px-[35px] bg-[#343a40e7] h-[62px] border-b-[2px] border-b-[#17a2b8] font-raleway">
+            <nav className="flex flex-wrap items-center justify-between px-[35px] bg-[#343a40e7] min-h-[62px] border-b-[2px] border-b-[#17a2b8] font-raleway">
                 <Link to="/">
                     <h1 className="flex items-center gap-x-2 text-[24px] font-bold text-[white] cursor-pointer hover:text-blue-400 duration-[.3s]">
                         <FaCode /> DevConnector
                     </h1>
                 </Link>
-                <ul className="flex items-center gap-x-[20px]">
+                <ul className="flex flex-wrap items-center gap-x-[20px]">
                     {!token ? (
                         <>
                             <Link to='/Developers'>
