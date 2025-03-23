@@ -25,7 +25,24 @@ function Posts() {
     }, []);
 
     const handleSubmit = () => {
-        console.log("Submitting post:", postText);
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No token found");
+            return;
+        }
+
+        const newPost = { text: postText };
+
+        axios.post('https://nt-devconnector.onrender.com/api/posts', newPost, {
+            headers: {
+                "x-auth-token": token,
+            },
+        })
+        .then((res) => {
+            setPosts([res.data, ...posts]);
+            setPostText(''); 
+        })
+        .catch(err => console.error(err));
     };
 
     return (

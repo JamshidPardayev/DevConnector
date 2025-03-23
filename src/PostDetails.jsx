@@ -19,6 +19,7 @@ const PostDetails = () => {
       .then((res) => setPost(res.data));
   }, []);
 
+
   return (
     <div className="py-4 px-8">
         <Link to={"/Posts"}><button className="w-[150px] h-[40px] my-5 bg-[#f4f4f4] text-[#333333]">Back to Post</button></Link>        
