@@ -30,12 +30,12 @@ function Developers() {
                                     <h2 className='font-bold text-[24px]'>{developer.user.name}</h2>
                                     <h2 className='text-[16px] mt-2'>{developer.status} at {developer.company}</h2>
                                     <h2 className='text-[16px] mt-3'>{developer.location}</h2>
-                                    <Link to={`/developers/${developer._id}`}>
+                                    <Link to={`/developers/${developer.user._id}`}>
                                     <button className='w-[125px] h-[40px] bg-[#17a2b8] text-[#ffffff] cursor-pointer hover:bg-blue-600 duration-[.3s] mt-3'>View Profile</button>
                                     </Link>
                                 </div>
                             </div>
-                            <h2 className='flex flex-col text-[#17a2b8] mr-[40px]'>{developer.skills}</h2>
+                            {/* <h2 className='flex flex-col text-[#17a2b8] mr-[40px]'>{developer.skills}</h2> */}
                         </div>
                     )
                 })}                
