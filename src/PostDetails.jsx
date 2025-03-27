@@ -59,8 +59,8 @@ const PostDetails = () => {
       <textarea
                 className='border border-gray-300 h-[130px] p-2 mt-4 w-full outline-none text-gray-500 tracking-[2px]'
                 placeholder='Comment the Post'
-            />
-            <button className='w-[100px] h-[40px] text-white bg-[#343a40] hover:bg-black duration-500'>Submit</button>
+      />
+      <button className='w-[100px] h-[40px] text-white bg-[#343a40] hover:bg-black duration-500'>Submit</button>
     </div>
     
   );

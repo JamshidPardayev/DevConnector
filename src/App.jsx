@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Header from "./Header"
 import Hero from "./Hero"
 import Signup from "./Signup";
@@ -8,8 +8,27 @@ import Developers from "./Developers";
 import Posts from "./Posts";
 import PostDetails from "./PostDetails";
 import DevelopersDetails from "./DevelopersDetails";
+import { useEffect } from "react";
+import NotFound from "./NotFound";
 
 function App() {
+
+  function ProtectedRoute({ children }) {
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      if (!isAuth()) {
+        navigate('/Login');
+      }
+    }, [navigate]);
+  
+    return isAuth() ? children : null;
+
+  }
+  
+  function isAuth() {
+    return localStorage.getItem("token") !== null;
+  }
   return (
     <Router>
       <Header />
@@ -17,8 +36,12 @@ function App() {
         <Route path="/" element={<Hero />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Login" element={<Login />} /> 
-        <Route path="/Posts" element={<Posts />} /> 
-        <Route path="/Dashboard" element={<Dashboard />} /> 
+        <Route path="*" element={<NotFound />} /> 
+
+        <Route path="/Posts" element={<ProtectedRoute><Posts /></ProtectedRoute>} /> 
+
+
+        <Route path="/Dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} /> 
         <Route path="/Developers" element={<Developers />} /> 
         <Route path="/Logout" element={<Hero />} /> 
         <Route path="/posts/:id" element={<PostDetails />} /> 

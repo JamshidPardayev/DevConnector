@@ -1,12 +1,18 @@
 import { Fragment } from "react";
 import { FaCode, FaUser } from "react-icons/fa";
 import { CiLogin } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 function Header() {
     const token = localStorage.getItem('token'); 
-
+    const navigate = useNavigate();
+    function Logout(){
+        localStorage.removeItem("token")
+        return navigate("/signup")
+    }
     return (
+        
+
         <Fragment>
             <nav className="flex flex-wrap items-center justify-between px-[35px] bg-[#343a40e7] min-h-[62px] border-b-[2px] border-b-[#17a2b8] font-raleway">
                 <Link to="/">
@@ -41,11 +47,11 @@ function Header() {
                                     <FaUser /> Dashboard
                                 </li>
                             </Link>
-                            <Link to='/Logout'>
+                            <button onClick={Logout}>
                                 <li className="flex items-center text-[16px] font-medium text-[white] cursor-pointer hover:text-blue-400 duration-[.3s]">
                                     <CiLogin /> Logout
                                 </li>
-                            </Link>
+                            </button>
                         </>
                     )}
                 </ul>
