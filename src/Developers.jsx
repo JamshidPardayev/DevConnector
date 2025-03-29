@@ -21,7 +21,7 @@ function Developers() {
             <p className='flex items-center gap-x-3 text-[#333333] text-[24px]'><FaConnectdevelop /> Browse and connect with developers</p>
             
             <div>
-                {developers.map((developer, index) => {
+                {developers?.map((developer, index) => {
                     return(
                         <div key={index} className='flex flex-wrap bg-[#f4f4f4] mt-4  justify-between border p-4 border-gray-300 my-1  px-4 items-center'>
                            <div className='flex flex-wrap items-center gap-x-[30px]'>
