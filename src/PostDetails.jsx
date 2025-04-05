@@ -24,7 +24,7 @@ const PostDetails = () => {
 
     // Fetch comments
     axios
-      .get(`https://nt-devconnector.onrender.com/api/posts/${id}/comments`, {
+      .get(`https://nt-devconnector.onrender.com/api/posts/comment/${id}`, {
         headers: {
           "x-auth-token": token,
         },
